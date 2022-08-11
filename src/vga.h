@@ -15,6 +15,7 @@
 #define AC_WRITE_PORT 0x3c0
 #define AC_RESET_PORT 0x3da
 
+uint8_t* get_fb_segment();
 void init_vga_graphics(void);
 void vga_put_pixel(uint32_t x, uint32_t y, uint8_t color_index);
 

@@ -3,7 +3,7 @@
 #include "ports.h"
 #include "std.h"
 #include "screen.h"
-#include "vga.h"
+#include "vga_framework.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -71,8 +71,8 @@ static void mouse_callback(Registers regs) {
 }
 
 void render_mouse_zort(void) {
+    fill_rect(mouse_x / 4, mouse_y / 4, 5, 5, 0x05);
     if (!mouse_packet_ready) return;
-    vga_put_pixel(old_mouse_x, old_mouse_y, 0x01);
 
     bool x_n, y_n, x_o, y_o;
 
@@ -110,7 +110,6 @@ void render_mouse_zort(void) {
     if (mouse_x < 0) mouse_x = 0;
     if (mouse_y < 0) mouse_y = 0;
 
-    vga_put_pixel(mouse_x / 4, mouse_y / 4, 0x02);
     old_mouse_x = mouse_x / 4;
     old_mouse_y = mouse_y / 4;
 

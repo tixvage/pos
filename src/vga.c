@@ -20,7 +20,7 @@ static unsigned char g_320x200x256[] = {
     0x41, 0x00, 0x0F, 0x00, 0x00
 };
 
-static uint8_t* get_fb_segment() {
+uint8_t* get_fb_segment() {
     port_byte_out(GC_INDEX_PORT, 0x06);
     uint8_t segment = port_byte_in(GC_DATA_PORT) & (3<<2);
     switch (segment) {

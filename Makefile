@@ -22,7 +22,7 @@ mykernel.iso: kernel.bin
 	rm -rf iso
 
 run: mykernel.iso
-	qemu-system-i386 -cdrom kernel.iso
+	qemu-system-i386 -m 100M -cdrom kernel.iso
 
 %.o: %.c ${HEADERS}
 	${CC} ${CFLAGS} -ffreestanding -c $< -o $@
