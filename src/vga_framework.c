@@ -18,3 +18,7 @@ void put_pixel(uint32_t x, uint32_t y, uint8_t color_index) {
     uint8_t* pixel_address = back_buffer + 320 * y + x;
     *pixel_address = color_index;
 }
+
+uint8_t* get_framebuffer(void) {
+    return back_buffer;
+}

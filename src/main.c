@@ -7,8 +7,9 @@
 #include "keyboard.h"
 #include "vga.h"
 #include "vga_framework.h"
+#include "text.h"
 
-#define FPS 30
+#define FPS 120
 #define DT (1.0/(float)FPS)
 
 void clear_vga(void) {
@@ -35,7 +36,8 @@ void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
     int i = 0;
     while (1) {
         clear_vga();
-        i = i > 320 ? 0 : i + (100 * DT);
+        print_str("ME WHEN AMOGOSUS", 50, 50);
+        i = i > 320 ? 0 : i + 1;
         fill_rect(i, 20, 20, 20, 0x03);
         render_mouse_zort();
         spaw_buffers();
