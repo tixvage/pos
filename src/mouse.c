@@ -72,7 +72,7 @@ static void mouse_callback(Registers regs) {
 
 void render_mouse_zort(void) {
     //TODO: sensivity?
-    fill_rect(mouse_x / 2, mouse_y / 2, 5, 5, 0x05);
+    fill_rect(mouse_x, mouse_y, 5, 5, 0x05);
     if (!mouse_packet_ready) return;
 
     bool x_n, y_n, x_o, y_o;

@@ -1,4 +1,5 @@
 #include "gdt.h"
+#include "input.h"
 #include "mouse.h"
 #include "screen.h"
 #include "std.h"
@@ -15,7 +16,7 @@
 void clear_vga(void) {
     for(int32_t y = 0; y < 200; y++)
         for(int32_t x = 0; x < 320; x++)
-            put_pixel(x, y, 0x01);
+            put_pixel(x, y, 0x00);
 }
 
 void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
@@ -30,17 +31,33 @@ void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
     init_keyboard();
     init_mouse();
     init_timer(1000);
-    //TODO: rendering system
     //TODO: tearing (not that important but :))
     init_vga_graphics();
     int i = 0;
     while (1) {
         clear_vga();
         print_str("ME WHEN AMOGOSUS\nand new line", 50, 50);
-        i = i > 320 ? 0 : i + 1;
+        //i = i > 320 ? 0 : i + 1;
         fill_rect(i, 20, 20, 20, 0x03);
+        Input* input = get_input();
+        switch (input->type) {
+            case EVENT_KEY_DOWN: {
+                switch (input->key) {
+                    case 'D': {
+                        i++;
+                    } break;
+                    case 'A': {
+                        i--;
+                    } break;
+                }
+            } break;
+            default: {
+
+            } break;
+        }
         render_mouse_zort();
         spaw_buffers();
+        input_tick();
         sleep(1000/FPS);
     }
 }
