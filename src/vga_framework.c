@@ -2,7 +2,7 @@
 #include "std.h"
 #include "vga.h"
 
-static uint8_t back_buffer[320*200*8];
+static uint8_t back_buffer[200*320*8];
 
 void spaw_buffers(void) {
     kmemcpy(back_buffer, get_fb_segment(), 200 * ((8 | 7) >> 3) * 320);

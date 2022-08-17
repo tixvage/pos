@@ -16,7 +16,7 @@
 void clear_vga(void) {
     for(int32_t y = 0; y < 200; y++)
         for(int32_t x = 0; x < 320; x++)
-            put_pixel(x, y, 0x00);
+            put_pixel(x, y, 0x01);
 }
 
 void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
@@ -36,9 +36,8 @@ void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
     int i = 0;
     while (1) {
         clear_vga();
-        print_str("ME WHEN AMOGOSUS\nand new line", 50, 50);
-        //i = i > 320 ? 0 : i + 1;
         fill_rect(i, 20, 20, 20, 0x03);
+        print_str("hello font!", 50, 50);
         Input* input = get_input();
         switch (input->type) {
             case EVENT_KEY_DOWN: {
@@ -56,8 +55,8 @@ void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
             } break;
         }
         render_mouse_zort();
-        spaw_buffers();
         input_tick();
         sleep(1000/FPS);
+        spaw_buffers();
     }
 }
