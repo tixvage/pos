@@ -1,12 +1,15 @@
 MAGIC 		equ		0x1badb002
-FLAGS 		equ		(1<<0 | 1<<1)
+FLAGS 		equ		(1<<0 | 1<<1 | 1<<2)
 CHECKSUM 	equ		-(MAGIC + FLAGS)
 
 section .multiboot
+align 4
     dd MAGIC
     dd FLAGS
     dd CHECKSUM
-
+	dd 0, 0, 0, 0, 0
+	dd 0
+	dd 1280, 1024, 32
 
 section .text
 [extern kernel_main]
@@ -15,7 +18,6 @@ global _start
 [bits 32]
 _start:
 	mov esp, kernel_stack
-	push eax
     push ebx
     call kernel_main
 

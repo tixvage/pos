@@ -18,11 +18,11 @@ mykernel.iso: kernel.bin
 	echo '  multiboot /boot/kernel.bin'    >> iso/boot/grub/grub.cfg
 	echo '  boot'                            >> iso/boot/grub/grub.cfg
 	echo '}'                                 >> iso/boot/grub/grub.cfg
-	grub-mkrescue --verbose --output=kernel.iso iso
+	grub-mkrescue --output=kernel.iso iso
 	rm -rf iso
 
 run: mykernel.iso
-	qemu-system-i386 -m 100M -cdrom kernel.iso
+	qemu-system-i386 -vga std -m 100M -cdrom kernel.iso
 
 %.o: %.c ${HEADERS}
 	${CC} ${CFLAGS} -ffreestanding -c $< -o $@

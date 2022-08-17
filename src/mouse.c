@@ -70,9 +70,50 @@ static void mouse_callback(Registers regs) {
 
 }
 
-void render_mouse_zort(void) {
+static const char* cursor_ascii = {
+    " #          \n"
+    " ##         \n"
+    " ###        \n"
+    " ####       \n"
+    " #####      \n"
+    " ######     \n"
+    " #######    \n"
+    " ########   \n"
+    " #########  \n"
+    " ########## \n"
+    " ######     \n"
+    " ##  ##     \n"
+    " #    ##    \n"
+    "      ##    \n"
+    "       ##   \n"
+    "       ##   \n"
+    "            \n"
+};
+
+//TODO: ascii tools
+static void render_ascii_art(int x, int y) {
+    int x_r = x, y_r = y;
+
+    for (int i = 0; i < kstrlen(cursor_ascii); i++) {
+        switch (cursor_ascii[i]) {
+            case '#': {
+                put_pixel(x_r, y_r, 0x05);
+            } break;
+            
+            case '\n': {
+                x_r = x - 1;
+                y_r++;
+            } break;
+        }
+        
+        x_r++;
+    }
+}
+
+void render_mouse(void) {
     //TODO: sensivity?
-    fill_rect(mouse_x, mouse_y, 5, 5, 0x05);
+    render_ascii_art(mouse_x, mouse_y);
+
     if (!mouse_packet_ready) return;
 
     bool x_n, y_n, x_o, y_o;

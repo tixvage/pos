@@ -19,10 +19,19 @@ void clear_vga(void) {
             put_pixel(x, y, 0x01);
 }
 
-void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
-    (void) multiboot_structure;
-    (void) multiboot_magic;
+void putpixeli(uint32_t* mb, int x, int y, uint32_t c) {
+    volatile uint32_t* framebuffer = (uint32_t *)mb[22];
+    framebuffer[x + (y * mb[24] / 4)] = c;
+}
 
+void kernel_main(uint32_t* multiboot_structure) {
+    while (1) {
+        for (int x = 0; x < 1280; x++)
+            for (int y = 0; y < 1024; y++)
+                putpixeli(multiboot_structure, x, y, 0xFF181818);
+    }
+
+#if 0
     clear_screen();
     gdt_install();
     isr_install();
@@ -54,9 +63,10 @@ void kernel_main(const void* multiboot_structure, uint32_t multiboot_magic) {
 
             } break;
         }
-        render_mouse_zort();
+        render_mouse();
         input_tick();
-        sleep(1000/FPS);
         spaw_buffers();
+        sleep(1000/FPS);
     }
+#endif
 }

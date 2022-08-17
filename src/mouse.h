@@ -10,7 +10,7 @@
 #define PS2YOverflow 0b10000000
 
 void init_mouse(void);
-void render_mouse_zort(void);
+void render_mouse(void);
 
 #endif
 
