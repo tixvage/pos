@@ -4,10 +4,14 @@
 
 #define BUFFER_SIZE VESA_WIDTH*VESA_HEIGHT*32
 
-static uint32_t back_buffer[BUFFER_SIZE];
+uint32_t* back_buffer;
+
+void init_vesa_fb(Memory_Manager* mm) {
+    back_buffer = mm_alloc(mm, BUFFER_SIZE);
+}
 
 void spaw_buffers(void) {
-    kmemcpyfast(back_buffer, get_vesa_fb(), BUFFER_SIZE);
+    kmemcpy(back_buffer, get_vesa_fb(), BUFFER_SIZE);
 }
 
 void fill_rect(int x_, int y_, int w, int h, uint32_t color) {
