@@ -12,6 +12,6 @@ uint32_t* get_vesa_fb(void) {
 }
 
 void put_pixel_vesa(int x, int y, uint32_t color) {
-    uint32_t* pixel_addr = vesa_fb + 1024 * y + x;
+    uint32_t* pixel_addr = vesa_fb + VESA_WIDTH * y + x;
     *pixel_addr = color;
 }

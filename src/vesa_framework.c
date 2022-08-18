@@ -2,7 +2,7 @@
 #include "std.h"
 #include "vesa.h"
 
-#define BUFFER_SIZE 1024*768*32
+#define BUFFER_SIZE VESA_WIDTH*VESA_HEIGHT*32
 
 static uint32_t back_buffer[BUFFER_SIZE];
 
@@ -17,7 +17,7 @@ void fill_rect(int x_, int y_, int w, int h, uint32_t color) {
 }
 
 void put_pixel(uint32_t x, uint32_t y, uint32_t color_index) {
-    uint32_t* pixel_address = back_buffer + 1024 * y + x;
+    uint32_t* pixel_address = back_buffer + VESA_WIDTH * y + x;
     *pixel_address = color_index;
 }
 

@@ -14,11 +14,10 @@
 #define DT (1.0/(float)FPS)
 
 void clear_graphical_screen(void) {
-    for(int32_t y = 0; y < 768; y++)
-        for(int32_t x = 0; x < 1024; x++)
+    for(int32_t y = 0; y < VESA_HEIGHT; y++)
+        for(int32_t x = 0; x < VESA_WIDTH; x++)
             put_pixel(x, y, 0x181818);
 }
-
 
 void kernel_main(uint32_t* multiboot_structure) {
     clear_screen();
