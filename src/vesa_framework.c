@@ -2,16 +2,16 @@
 #include "std.h"
 #include "vesa.h"
 
-#define BUFFER_SIZE VESA_WIDTH*VESA_HEIGHT*32
-
 uint32_t* back_buffer;
 
 void init_vesa_fb(Memory_Manager* mm) {
     back_buffer = mm_alloc(mm, BUFFER_SIZE);
 }
 
-void spaw_buffers(void) {
-    kmemcpy(back_buffer, get_vesa_fb(), BUFFER_SIZE);
+void swap_buffers(void) {
+    for(int32_t y = 0; y < VESA_HEIGHT; y++)
+        for(int32_t x = 0; x < VESA_WIDTH; x++)
+                *(get_vesa_fb() + VESA_WIDTH * y + x) = *(back_buffer + VESA_WIDTH * y + x);
 }
 
 void fill_rect(int x_, int y_, int w, int h, uint32_t color) {

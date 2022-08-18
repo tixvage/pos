@@ -26,12 +26,12 @@ void kernel_main(void* multiboot_structure) {
     isr_install();
     __asm__("sti");
 
+    init_timer(1000);
     init_keyboard();
     init_mouse();
     uint32_t* memupper = (uint32_t*)(((uint32_t)multiboot_structure) + 8);
     uint32_t heap = 10*1024*1024;
     Memory_Manager mm = init_mm(heap, (*memupper)*1024 - heap - 10*1024);
-    init_timer(1000);
     init_vesa_graphics(multiboot_structure);
     init_vesa_fb(&mm);
     int i = 0;
@@ -60,7 +60,6 @@ void kernel_main(void* multiboot_structure) {
         }
         render_mouse();
         input_tick();
-        spaw_buffers();
-        sleep(1000/FPS);
+        swap_buffers();
     }
 }
