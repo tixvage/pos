@@ -3,7 +3,7 @@
 #include "ports.h"
 #include "std.h"
 #include "screen.h"
-#include "vga_framework.h"
+#include "vesa_framework.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -97,7 +97,7 @@ static void render_ascii_art(int x, int y) {
     for (int i = 0; i < kstrlen(cursor_ascii); i++) {
         switch (cursor_ascii[i]) {
             case '#': {
-                put_pixel(x_r, y_r, 0x05);
+                put_pixel(x_r, y_r, 0x00FF00);
             } break;
             
             case '\n': {

@@ -9,7 +9,7 @@ align 4
     dd CHECKSUM
 	dd 0, 0, 0, 0, 0
 	dd 0
-	dd 1280, 1024, 32
+	dd 1024, 768, 32
 
 section .text
 [extern kernel_main]

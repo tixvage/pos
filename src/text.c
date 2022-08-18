@@ -1,5 +1,5 @@
 #include "text.h"
-#include "vga_framework.h"
+#include "vesa_framework.h"
 #include "std.h"
 
 unsigned char asciifont[32768] = {
@@ -6927,7 +6927,7 @@ unsigned char susomerfont[] = {
 
 };
 
-void vga_print_char(unsigned char c, int start_x, int start_y) {
+void vga_print_char(unsigned char c, int start_x, int start_y, uint32_t color) {
     uint32_t p_pos = 0, s_pos = 0;
     for (int32_t t = c * 128; t < (c * 128) + 128; t++) {
         if (p_pos > 7) {
@@ -6942,7 +6942,7 @@ void vga_print_char(unsigned char c, int start_x, int start_y) {
 
             } break;
             case 1: {
-                put_pixel(start_x + p_pos, start_y + s_pos, 0x02);
+                put_pixel(start_x + p_pos, start_y + s_pos, color);
             } break;
         }
 
@@ -6950,7 +6950,7 @@ void vga_print_char(unsigned char c, int start_x, int start_y) {
     }
 }
 
-void print_str(const char* str, int start_x, int start_y) {
+void print_str(const char* str, int start_x, int start_y, uint32_t color) {
     uint32_t p_pos = 0, s_pos = 0;
     for (int i = 0; i < kstrlen(str); i++) {
         if (str[i] == '\n') {
@@ -6958,7 +6958,7 @@ void print_str(const char* str, int start_x, int start_y) {
             s_pos += 16;
             continue;
         }
-        vga_print_char(str[i], start_x + p_pos, start_y + s_pos);
+        vga_print_char(str[i], start_x + p_pos, start_y + s_pos, color);
         p_pos += 9;
     }
 }

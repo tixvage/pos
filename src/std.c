@@ -4,6 +4,17 @@ void kmemcpy(char* source, char* dest, int nbytes) {
     for (int i = 0; i < nbytes; i++) *(dest + i) = *(source + i);
 }
 
+void kmemcpyfast(const void* src, void* dest, int nbytes) {
+__asm__ volatile ("rep movsb"
+: "=D" (dest),
+"=S" (src),
+"=c" (nbytes)
+: "0" (dest),
+"1" (src),
+"2" (nbytes)
+: "memory");
+}
+
 void kmemset(uint8_t *dest, uint8_t val, uint32_t len) {
     uint8_t *temp = (uint8_t *)dest;
     for ( ; len != 0; len--) *temp++ = val;
