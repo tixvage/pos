@@ -22,7 +22,7 @@ mykernel.iso: kernel.bin
 	rm -rf iso
 
 vbox: mykernel.iso
-	VirtualBoxVM --startvm 'SusOS'
+	VirtualBoxVM.exe --startvm 'SusOS'
 
 qemu: mykernel.iso
 	qemu-system-i386 -vga std -m 256M -cdrom kernel.iso
