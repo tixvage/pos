@@ -21,7 +21,10 @@ mykernel.iso: kernel.bin
 	grub-mkrescue --output=kernel.iso iso
 	rm -rf iso
 
-run: mykernel.iso
+vbox: mykernel.iso
+	VirtualBoxVM --startvm 'SusOS'
+
+qemu: mykernel.iso
 	qemu-system-i386 -vga std -m 256M -cdrom kernel.iso
 
 %.o: %.c ${HEADERS}
