@@ -9,9 +9,10 @@ void init_vesa_fb(Memory_Manager* mm) {
 }
 
 void swap_buffers(void) {
-    for(int32_t y = 0; y < VESA_HEIGHT; y++)
-        for(int32_t x = 0; x < VESA_WIDTH; x++)
-                *(get_vesa_fb() + VESA_WIDTH * y + x) = *(back_buffer + VESA_WIDTH * y + x);
+    __asm__ volatile("mov %%eax, %%esi;"
+                     "mov %%ebx, %%edi;"
+                     "rep movsd;" : :
+                     "c" (VESA_HEIGHT*VESA_WIDTH), "a" (back_buffer), "b" (get_vesa_fb()));
 }
 
 void fill_rect(int x_, int y_, int w, int h, uint32_t color) {
