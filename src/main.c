@@ -16,9 +16,7 @@
 #define DT (1.0/(float)FPS)
 
 void clear_graphical_screen(void) {
-    for(int32_t x = 0; x < VESA_WIDTH; x++)
-        for(int32_t y = 0; y < VESA_HEIGHT; y++)
-            put_pixel(x, y, 0x181818);
+    kmemset(get_framebuffer(), 0x181818, VESA_WIDTH*VESA_HEIGHT);
 }
 
 void dump_mb_infos(multiboot* boot) {
@@ -43,8 +41,8 @@ void kernel_main(void* multiboot_structure) {
     Memory_Manager mm = init_mm(heap, (*memupper)*1024 - heap - 10*1024);
     init_vesa_graphics(multiboot_structure);
     init_vesa_fb(&mm);
-    while (1) {
-        kmemset(get_framebuffer(), 0x181818, VESA_WIDTH*VESA_HEIGHT);
+    while (!false) {
+        clear_graphical_screen();
         print_str("hello font!", 50, 50, 0xFF0000);
         render_mouse();
         input_tick();
