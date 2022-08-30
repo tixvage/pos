@@ -2,6 +2,7 @@
 #include "input.h"
 #include "mem.h"
 #include "mouse.h"
+#include "ports.h"
 #include "screen.h"
 #include "std.h"
 #include "isr.h"
@@ -42,6 +43,8 @@ void kernel_main(void* multiboot_structure) {
     init_vesa_graphics(multiboot_structure);
     init_vesa_fb(&mm);
     while (!false) {
+        while((port_byte_in(0x03da) & 0x8) != 0);
+        while((port_byte_in(0x03da) & 0x8) == 0);
         clear_graphical_screen();
         print_str("hello font!", 50, 50, 0xFF0000);
         render_mouse();
