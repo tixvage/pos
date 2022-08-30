@@ -1,6 +1,6 @@
 #include "gdt.h"
 
-Gdt_Entry gdt[3];
+Gdt_Entry gdt[5];
 Gdt_Ptr gp;
 
 void gdt_set_gate(int num, unsigned long base, unsigned long limit,
@@ -21,11 +21,11 @@ void gdt_install(void) {
     gp.limit = (sizeof(Gdt_Entry) * 3) - 1;
     gp.base = (int)&gdt;
 
-    gdt_set_gate(0, 0, 0, 0, 0);
-
-    gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-
-    gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
+    gdt_set_gate(0, 0, 0, 0, 0);                            // Null segment
+    gdt_set_gate(1, 0, 0xFFFFFFFF, 0b10011010, 0b11001111); // Code segment
+    gdt_set_gate(2, 0, 0xFFFFFFFF, 0b10010010, 0b11001111); // Data segment
+    gdt_set_gate(3, 0, 0xFFFFFFFF, 0b11111010, 0b11001111); // User mode code segment
+    gdt_set_gate(4, 0, 0xFFFFFFFF, 0b11110010, 0b11001111); // User mode data segment
 
     gdt_flush();
 }

@@ -1,11 +1,13 @@
 #include "vesa_framework.h"
 #include "std.h"
 #include "vesa.h"
+#include "mmu.h"
 
-uint32_t* back_buffer;
+static uint32_t back_buffer[VESA_WIDTH*VESA_HEIGHT];
 
 void init_vesa_fb(Memory_Manager* mm) {
-    back_buffer = mm_alloc(mm, BUFFER_SIZE);
+    //TODO: proper memory manager
+    //current Memory_Manager is not working for some reason
 }
 
 void swap_buffers(void) {
