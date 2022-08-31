@@ -72,23 +72,19 @@ static void mouse_callback(Registers regs) {
 }
 
 static const char* cursor_ascii = {
-    "#         \n"
-    "##        \n"
-    "###       \n"
-    "####      \n"
-    "#####     \n"
-    "######    \n"
-    "#######   \n"
-    "########  \n"
-    "######### \n"
-    "##########\n"
-    "######    \n"
-    "##  ##    \n"
-    "#    ##   \n"
-    "     ##   \n"
-    "      ##  \n"
-    "      ##  \n"
-    "          \n"
+    "99       \n"
+    "9#9      \n"
+    "9##9     \n"
+    "9###9    \n"
+    "9####9   \n"
+    "9#####9  \n"
+    "9######9 \n"
+    "9#######9\n"
+    "9####9999\n"
+    "9###9    \n"
+    "9##9     \n"
+    "9#9      \n"
+    "99       \n"
 };
 
 //TODO: ascii tools
@@ -99,7 +95,12 @@ static void render_ascii_art(int x, int y) {
         switch (cursor_ascii[i]) {
             case '#': {
                 if(x_r >= 0 && y_r >= 0 && x_r < VESA_WIDTH && y_r < VESA_HEIGHT)
-                    put_pixel(x_r, y_r, 0x00FF00);
+                    put_pixel(x_r, y_r, 0xFFFFFF);
+            } break;
+
+            case '9': {
+                if(x_r >= 0 && y_r >= 0 && x_r < VESA_WIDTH && y_r < VESA_HEIGHT)
+                    put_pixel(x_r, y_r, 0x000000);
             } break;
             
             case '\n': {
