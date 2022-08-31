@@ -4,6 +4,7 @@
 #include "std.h"
 #include "screen.h"
 #include "vesa_framework.h"
+#include "vesa.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -71,23 +72,23 @@ static void mouse_callback(Registers regs) {
 }
 
 static const char* cursor_ascii = {
-    " #          \n"
-    " ##         \n"
-    " ###        \n"
-    " ####       \n"
-    " #####      \n"
-    " ######     \n"
-    " #######    \n"
-    " ########   \n"
-    " #########  \n"
-    " ########## \n"
-    " ######     \n"
-    " ##  ##     \n"
-    " #    ##    \n"
-    "      ##    \n"
-    "       ##   \n"
-    "       ##   \n"
-    "            \n"
+    "#         \n"
+    "##        \n"
+    "###       \n"
+    "####      \n"
+    "#####     \n"
+    "######    \n"
+    "#######   \n"
+    "########  \n"
+    "######### \n"
+    "##########\n"
+    "######    \n"
+    "##  ##    \n"
+    "#    ##   \n"
+    "     ##   \n"
+    "      ##  \n"
+    "      ##  \n"
+    "          \n"
 };
 
 //TODO: ascii tools
@@ -97,7 +98,8 @@ static void render_ascii_art(int x, int y) {
     for (int i = 0; i < kstrlen(cursor_ascii); i++) {
         switch (cursor_ascii[i]) {
             case '#': {
-                put_pixel(x_r, y_r, 0x00FF00);
+                if(x_r >= 0 && y_r >= 0 && x_r < VESA_WIDTH && y_r < VESA_HEIGHT)
+                    put_pixel(x_r, y_r, 0x00FF00);
             } break;
             
             case '\n': {
@@ -112,6 +114,7 @@ static void render_ascii_art(int x, int y) {
 
 void render_mouse(void) {
     //TODO: sensivity?
+    
     render_ascii_art(mouse_x, mouse_y);
 
     if (!mouse_packet_ready) return;
@@ -151,6 +154,9 @@ void render_mouse(void) {
     //TODO: limit for other directions?
     if (mouse_x < 0) mouse_x = 0;
     if (mouse_y < 0) mouse_y = 0;
+    if (mouse_x >= VESA_WIDTH) mouse_x = VESA_WIDTH - 1;
+    if (mouse_y >= VESA_HEIGHT) mouse_y = VESA_HEIGHT - 1;
+    
 
     old_mouse_x = mouse_x / 4;
     old_mouse_y = mouse_y / 4;
