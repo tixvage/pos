@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define VESA_HEIGHT 1080
-#define VESA_WIDTH 1920
+#define VESA_HEIGHT 768
+#define VESA_WIDTH 1024
 
 void init_vesa_graphics(uint32_t* multiboot_structure);
 uint32_t* get_vesa_fb(void);
