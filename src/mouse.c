@@ -87,7 +87,7 @@ static const char* cursor_ascii = {
     "99  9##9\n"
     "     9##9\n"
     "     9##9\n"
-    "      9999\n"
+    "      99\n"
 };
 
 //TODO: ascii tools
