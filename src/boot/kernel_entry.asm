@@ -5,13 +5,15 @@ CHECKSUM 	equ		-(MAGIC + FLAGS)
 KERNEL_VIRTUAL_BASE equ 0xC0000000
 KERNEL_PAGE_NUMBER  equ (KERNEL_VIRTUAL_BASE >> 22)
 
+global boot_page_directory
+
 section .data
 align 0x1000
 boot_page_directory:
-    dd 0x83
-    times (KERNEL_PAGE_NUMBER - 1) dd 0
-    dd 0x83
-    times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0
+	dd 0x00000083
+	times (KERNEL_PAGE_NUMBER - 1) dd 0
+	dd 0x00000083
+	times (1024 - KERNEL_PAGE_NUMBER - 1) dd 0
 
 section .multiboot
 align 4
@@ -20,7 +22,7 @@ align 4
     dd CHECKSUM
 	dd 0, 0, 0, 0, 0
 	dd 0
-	dd 800, 600, 32
+	dd 1920, 1080, 32
 
 [extern kernel_main]
 
@@ -46,7 +48,7 @@ _start:
     mov dword [boot_page_directory], 0
     invlpg [0]
     
-	mov esp, kernel_stack
+	mov esp, stack_top
 
     push ebx
 
@@ -62,7 +64,7 @@ _start:
 	cli
 
 _old_start:
-	mov esp, kernel_stack
+	mov esp, stack_top
     push ebx
     call kernel_main
 
@@ -71,7 +73,11 @@ _stop:
     jmp _stop
 
 
+;section .bss
+;	align 2*1024*1024; # 2 MiB
+;kernel_stack:
 section .bss
-	align 2*1024*1024; # 2 MiB
-kernel_stack:
-
+align 16
+stack_bottom:
+resb 0x4000 ; 16 KiB
+stack_top:

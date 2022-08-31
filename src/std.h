@@ -5,7 +5,7 @@
 
 void kmemcpy(char* source, char* dest, int nbytes);
 void kmemcpyfast(const void* src, void* dest, int nbytes);
-void kmemset(uint32_t *dest, uint32_t val, uint32_t len);
+void kmemset(void *dest, uint32_t val, uint32_t len);
 void kint_to_ascii(int n, char str[]);
 void kreverse(char s[]);
 int kstrlen(char s[]);

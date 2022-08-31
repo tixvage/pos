@@ -15,8 +15,8 @@ __asm__ volatile ("rep movsb"
 : "memory");
 }
 
-void kmemset(uint32_t *dest, uint32_t val, uint32_t len) {
-    uint32_t *temp = (uint32_t *)dest;
+void kmemset(void *dest, uint32_t val, uint32_t len) {
+    unsigned char *temp = dest;
     for ( ; len != 0; len--) *temp++ = val;
 }
 

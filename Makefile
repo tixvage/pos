@@ -3,7 +3,7 @@ HEADERS = $(wildcard src/*.h)
 OBJ = ${C_SOURCES:.c=.o src/interrupt.o src/boot/kernel_entry.o src/boot/gdt.o}
 
 CC = i386-elf-gcc
-CFLAGS = -g -march=i686
+CFLAGS = -g -march=i686 -O3
 
 kernel.bin: ${OBJ}
 	ld -melf_i386 -T linker.ld -o $@ $^

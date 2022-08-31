@@ -2,12 +2,13 @@
 #include "std.h"
 #include "vesa.h"
 #include "mmu.h"
+#include "vmm.h"
 
-static uint32_t back_buffer[VESA_WIDTH*VESA_HEIGHT];
+static uint32_t* back_buffer;
 
-void init_vesa_fb(Memory_Manager* mm) {
-    //TODO: proper memory manager
-    //current Memory_Manager is not working for some reason
+void init_vesa_fb(void) {
+    back_buffer = aligned_alloc(0x100, BUFFER_SIZE);
+    //TODO: mapping back_buffer?
 }
 
 void swap_buffers(void) {
