@@ -13,6 +13,7 @@ typedef struct Mem_Block {
     uint8_t data[1];
 } Mem_Block;
 
+uint32_t vmm_used_memory(void);
 uint32_t align_to(uint32_t n, uint32_t align);
 void* sbrk(uint32_t size);
 uint32_t mem_block_size(Mem_Block* block);

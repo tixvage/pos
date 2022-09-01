@@ -13,12 +13,15 @@
 #include "multiboot.h"
 #include "mmu.h"
 #include "pmm.h"
+#include "vmm.h"
 
 #define FPS 1000
 #define DT (1.0/(float)FPS)
 
-void clear_graphical_screen(void) {
-    kmemset(get_framebuffer(), 0x181818, VESA_HEIGHT*VESA_WIDTH*4);
+void clear_graphical_screen(uint32_t color) {
+    for (uint32_t i = 0; i < VESA_HEIGHT*VESA_WIDTH; i++) {
+        get_framebuffer()[i] = color;
+    }
 }
 
 void kernel_main(void* mb) {
@@ -35,15 +38,16 @@ void kernel_main(void* mb) {
     init_vesa_graphics(multiboot_structure);
     init_vesa_fb();
     while (true) {
-        clear_graphical_screen();
-        char buffer2[20];
-        kint_to_ascii(pmm_total_memory() / 1024 / 1024, buffer2);
-        print_str("Available memory: ", 20, 70, 0xFF0000);
-        int temp_len = kstrlen(buffer2);
-        buffer2[temp_len] = 'm';
-        buffer2[temp_len + 1] = 'b';
-        buffer2[temp_len + 2] = '\0';
-        print_str(buffer2, 180, 70, 0xFF0000);
+        clear_graphical_screen(0x0D8A8A);
+        fill_rect(0, 0, VESA_WIDTH, 20, 0xFFFFFF);
+        fill_rect(5, 1, 18, 18, 0x00FF00);
+        fill_rect(8, 4, 12, 12, 0xFF0000);
+        fill_rect(11, 7, 6, 6, 0x0000FF);
+        print_str("File", 40, 2, 0x000000);
+        print_str("Edit", 90, 2, 0x000000);
+        print_str("View", 140, 2, 0x000000);
+        print_str("Label", 190, 2, 0x000000);
+        print_str("Special", 248, 2, 0x000000);
         render_mouse();
         input_tick();
         swap_buffers();

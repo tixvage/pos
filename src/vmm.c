@@ -6,6 +6,10 @@ static Mem_Block* bottom = NULL;
 static Mem_Block* top = NULL;
 static uint32_t used_memory = 0;
 
+uint32_t vmm_used_memory(void) {
+    return used_memory;
+}
+
 uint32_t align_to(uint32_t n, uint32_t align) {
     if (n % align == 0) return n;
     return n + (align - n % align);
