@@ -5,7 +5,6 @@
 #include "screen.h"
 #include "vesa_framework.h"
 #include "vesa.h"
-#include <stdbool.h>
 #include <stdint.h>
 
 static void mouse_wait(void) {
@@ -44,6 +43,8 @@ int mouse_byte_cycle = 0;
 bool mouse_packet_ready = false;
 int mouse_x = 0, mouse_y = 0, old_mouse_x = 0, old_mouse_y = 0;
 uint8_t mouse_packets[4];
+bool left_pressed;
+bool right_pressed;
 
 static void mouse_callback(Registers regs) {
     (void) regs;
@@ -155,16 +156,15 @@ void render_mouse(void) {
         if (y_o) mouse_y += 255;
     }
 
+    left_pressed = mouse_packets[0] & PS2Leftbutton;
+    right_pressed = mouse_packets[0] & PS2Rightbutton;
+
     //TODO: limit for other directions?
     if (mouse_x < 0) mouse_x = 0;
     if (mouse_y < 0) mouse_y = 0;
     if (mouse_x >= VESA_WIDTH) mouse_x = VESA_WIDTH - 1;
     if (mouse_y >= VESA_HEIGHT) mouse_y = VESA_HEIGHT - 1;
     
-
-    old_mouse_x = mouse_x / 4;
-    old_mouse_y = mouse_y / 4;
-
     mouse_packet_ready = false;
 }
 
@@ -189,3 +189,7 @@ void init_mouse(void) {
     register_interrupt_handler(IRQ12, mouse_callback); 
 }
 
+int get_mouse_x(void) { return mouse_x; }
+int get_mouse_y(void) { return mouse_y; }
+bool mouse_pressed_left(void) { return left_pressed; }
+bool mouse_pressed_right(void) { return right_pressed; }

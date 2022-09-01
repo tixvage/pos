@@ -83,6 +83,9 @@ void kernel_main(void* mb) {
         fill_rect(955, 1, 19, 19, 0xF0F000);
         print_str("?", 960, 2, 0x000000);
         render_mouse();
+        if (mouse_pressed_left()) {
+            print_str("left pressed", 500, 500, 0x000000);
+        }
         input_tick();
         swap_buffers();
         sleep(1000/FPS);
