@@ -24,6 +24,37 @@ void clear_graphical_screen(uint32_t color) {
     }
 }
 
+void render_time(int x, int y) {
+    Time time = get_time();
+    char buffer[9];
+    char *hour_fmt, *minute_fmt, *second_fmt;
+
+    hour_fmt = buffer;
+    if (time.hour < 10) {
+        buffer[0] = '0';
+        hour_fmt = &buffer[1];
+    }
+    kint_to_ascii(time.hour, hour_fmt);
+    buffer[2] = ':';
+
+    minute_fmt = &buffer[3];
+    if (time.minute < 10) {
+        buffer[3] = '0';
+        minute_fmt = &buffer[4];
+    }
+    kint_to_ascii(time.minute, minute_fmt);
+    buffer[5] = ':';
+
+    second_fmt = &buffer[6];
+    if (time.second < 10) {
+        buffer[6] = '0';
+        second_fmt = &buffer[7];
+    }
+    kint_to_ascii(time.second, second_fmt);
+
+    print_str(buffer, x, y, 0x000000);
+}
+
 void kernel_main(void* mb) {
     void* multiboot_structure = (void*) phys_to_virt(mb);
     init_pmm(multiboot_structure);
@@ -48,6 +79,9 @@ void kernel_main(void* mb) {
         print_str("View", 140, 2, 0x000000);
         print_str("Label", 190, 2, 0x000000);
         print_str("Special", 248, 2, 0x000000);
+        render_time(850, 2);
+        fill_rect(955, 1, 19, 19, 0xF0F000);
+        print_str("?", 960, 2, 0x000000);
         render_mouse();
         input_tick();
         swap_buffers();
