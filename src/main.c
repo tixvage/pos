@@ -1,8 +1,6 @@
 #include "gdt.h"
 #include "input.h"
 #include "mouse.h"
-#include "ports.h"
-#include "screen.h"
 #include "std.h"
 #include "isr.h"
 #include "timer.h"
@@ -18,16 +16,23 @@
 #define FPS 1000
 #define DT (1.0/(float)FPS)
 
-void memset_fast(void *_s, int _c, size_t _n) {
-    uint_fast32_t *temp = (uint_fast32_t*) _s;
-    _n /= sizeof(uint_fast32_t);
-    for ( ; _n != 0; _n--) {
-        *temp++ = _c;
-    }
+#define	wsize	sizeof(uint32_t)
+#define	wmask	(wsize - 1)
+
+void memset_fast3(void* dst0, register int c0, register size_t length) {
+	register size_t t;
+	register uint8_t *dst;
+
+	dst = dst0;
+	t = length / wsize;
+	do {
+		*(uint32_t *)dst = c0;
+		dst += wsize;
+	} while (--t != 0);
 }
 
 void clear_graphical_screen(uint32_t color) {
-    memset_fast(get_framebuffer(), color, get_vesa_pitch()*VESA_HEIGHT);
+    memset_fast3(get_framebuffer(), color, get_vesa_pitch()*VESA_HEIGHT);
 }
 
 void render_time(int x, int y) {
