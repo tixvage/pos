@@ -7,15 +7,19 @@
 static uint32_t* back_buffer;
 
 void init_vesa_fb(void) {
-    back_buffer = aligned_alloc(0x100, BUFFER_SIZE);
-    //TODO: mapping back_buffer?
+    uint32_t size = VESA_HEIGHT*get_vesa_pitch();
+    back_buffer = aligned_alloc(0x1000, size);
 }
 
+extern void memcpy_sse(uint32_t s, uint32_t d, uint32_t sz);
+
 void swap_buffers(void) {
+    memcpy_sse((uint32_t) get_vesa_fb(), (uint32_t) back_buffer, (VESA_HEIGHT*VESA_WIDTH) / 32);
+/*
     __asm__ volatile("mov %%eax, %%esi;"
                      "mov %%ebx, %%edi;"
                      "rep movsd;" : :
-                     "c" (VESA_HEIGHT*VESA_WIDTH), "a" (back_buffer), "b" (get_vesa_fb()));
+                     "c" (VESA_HEIGHT*VESA_WIDTH), "a" (back_buffer), "b" (get_vesa_fb()));*/
 }
 
 void fill_rect(int x_, int y_, int w, int h, uint32_t color) {

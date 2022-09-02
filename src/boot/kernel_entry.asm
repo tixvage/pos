@@ -52,6 +52,8 @@ _start:
 
     push ebx
 
+	;enable sse
+	;TODO: check if sse is available
     mov eax, cr0
     and ax, ~(1 << 2)
     or ax, (1 << 1)

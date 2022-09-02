@@ -18,10 +18,16 @@
 #define FPS 1000
 #define DT (1.0/(float)FPS)
 
-void clear_graphical_screen(uint32_t color) {
-    for (uint32_t i = 0; i < VESA_HEIGHT*VESA_WIDTH; i++) {
-        get_framebuffer()[i] = color;
+void memset_fast(void *_s, int _c, size_t _n) {
+    uint_fast32_t *temp = (uint_fast32_t*) _s;
+    _n /= sizeof(uint_fast32_t);
+    for ( ; _n != 0; _n--) {
+        *temp++ = _c;
     }
+}
+
+void clear_graphical_screen(uint32_t color) {
+    memset_fast(get_framebuffer(), color, get_vesa_pitch()*VESA_HEIGHT);
 }
 
 void render_time(int x, int y) {
@@ -78,7 +84,7 @@ void kernel_main(void* mb) {
         print_str("Edit", 90, 2, 0x000000);
         print_str("View", 140, 2, 0x000000);
         print_str("Label", 190, 2, 0x000000);
-        print_str("Special", 248, 2, 0x000000);
+        print_str("~Special~", 248, 2, 0x000000);
         render_time(850, 2);
         fill_rect(955, 1, 19, 19, 0xF0F000);
         print_str("?", 960, 2, 0x000000);

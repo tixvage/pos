@@ -1,6 +1,6 @@
 C_SOURCES = $(wildcard src/*.c)
 HEADERS = $(wildcard src/*.h)
-OBJ = ${C_SOURCES:.c=.o src/interrupt.o src/boot/kernel_entry.o src/boot/gdt.o}
+OBJ = ${C_SOURCES:.c=.o src/interrupt.o src/boot/kernel_entry.o src/boot/gdt.o src/sse.o}
 
 CC = i386-elf-gcc
 CFLAGS = -g -march=i686 -O2
