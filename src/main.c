@@ -89,7 +89,7 @@ void kernel_main(void* mb) {
         print_str("Edit", 90, 2, 0x000000);
         print_str("View", 140, 2, 0x000000);
         print_str("Label", 190, 2, 0x000000);
-        print_str("~Special~", 248, 2, 0x000000);
+        print_str("Special", 248, 2, 0x000000);
         render_time(850, 2);
         fill_rect(955, 1, 19, 19, 0xF0F000);
         print_str("?", 960, 2, 0x000000);
