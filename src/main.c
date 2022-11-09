@@ -81,6 +81,9 @@ void kernel_main(void* mb) {
     init_vesa_fb();
     while (true) {
         clear_graphical_screen(0x0D8A8A);
+
+        print_str("             ,----------------,              ,---------,\n        ,-----------------------,          ,\"        ,\"|\n      ,\"                      ,\"|        ,\"        ,\"  |\n     +-----------------------+  |      ,\"        ,\"    |\n     |  .-----------------.  |  |     +---------+      |\n     |  |                 |  |  |     | -==----'|      |\n     |  |  I LOVE POS!    |  |  |     |         |      |\n     |  |  lmao you noob  |  |  |/----|`---=    |      |\n     |  |  'UwU           |  |  |   ,/|==== ooo |      ;\n     |  |                 |  |  |  // |(((( [33]|    ,\"\n     |  `-----------------'  |,\" .;'| |((((     |  ,\"\n     +-----------------------+  ;;  | |         |,\"     \n        /_)______________(_/  //'   | +---------+\n   ___________________________/___  `,\n  /  oooooooooooooooo  .o.  oooo /,   ,\"-----------\n / ==ooooooooooooooo==.o.  ooo= //   ,`--{)B     ,\"\n/_==__==========__==_ooo__ooo=_/'   /___________,\"\n`-----------------------------'", 40, 40, 0xFFFFFF);
+
         fill_rect(0, 0, VESA_WIDTH, 20, 0xFFFFFF);
         fill_rect(5, 1, 18, 18, 0x00FF00);
         fill_rect(8, 4, 12, 12, 0xFF0000);
@@ -93,10 +96,13 @@ void kernel_main(void* mb) {
         render_time(VESA_WIDTH - 95, 2);
         fill_rect(VESA_WIDTH - 19, 1, 18, 18, 0xF0F000);
         print_str("?", VESA_WIDTH - 14, 2, 0x000000);
-        render_mouse();
         if (mouse_pressed_left()) {
             print_str("left pressed", VESA_WIDTH - 210, 2, 0x000000);
         }
+        render_mouse();
+
+
+
         input_tick();
         swap_buffers();
         sleep(1000/FPS);
