@@ -90,12 +90,12 @@ void kernel_main(void* mb) {
         print_str("View", 140, 2, 0x000000);
         print_str("Label", 190, 2, 0x000000);
         print_str("Special", 248, 2, 0x000000);
-        render_time(850, 2);
-        fill_rect(955, 1, 19, 19, 0xF0F000);
-        print_str("?", 960, 2, 0x000000);
+        render_time(VESA_WIDTH - 95, 2);
+        fill_rect(VESA_WIDTH - 19, 1, 18, 18, 0xF0F000);
+        print_str("?", VESA_WIDTH - 14, 2, 0x000000);
         render_mouse();
         if (mouse_pressed_left()) {
-            print_str("left pressed", 500, 500, 0x000000);
+            print_str("left pressed", VESA_WIDTH - 210, 2, 0x000000);
         }
         input_tick();
         swap_buffers();
