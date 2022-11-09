@@ -15,19 +15,6 @@ uint32_t align_to(uint32_t n, uint32_t align) {
     return n + (align - n % align);
 }
 
-void* sbrk(uint32_t size) {
-    uintptr_t addr;
-    __asm__ volatile (
-        "mov $4, %%eax\n"
-        "mov %[size], %%ebx\n"
-        "int $0x30\n"
-        "mov %%eax, %[addr]\n"
-        : [addr] "=r" (addr)
-        : [size] "r" (size)
-        : "%eax", "%ebx"
-    );
-    return (void*) addr;
-}
 
 uint32_t mem_block_size(Mem_Block* block) {
     return sizeof(Mem_Block) + (block->size & ~1);

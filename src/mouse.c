@@ -70,6 +70,50 @@ static void mouse_callback(Registers regs) {
         } break;
     }
 
+    if (!mouse_packet_ready) return;
+
+    bool x_n, y_n, x_o, y_o;
+
+    if (mouse_packets[0] & PS2XSign) x_n = true;
+    else x_n = false;
+
+    if (mouse_packets[0] & PS2YSign) y_n = true;
+    else y_n = false;
+
+    if (mouse_packets[0] & PS2XOverflow) x_o = true;
+    else x_o = false;
+
+    if (mouse_packets[0] & PS2YOverflow) y_o = true;
+    else y_o = false;
+
+    if (!x_n) {
+        mouse_x += mouse_packets[1];
+        if (x_o) mouse_x += 255;
+    } else {
+        mouse_packets[1] = 256 - mouse_packets[1];
+        mouse_x -= mouse_packets[1];
+        if (x_o) mouse_x -= 255;
+    }
+
+    if (!y_n){
+        mouse_y -= mouse_packets[2];
+        if (y_o) mouse_y -= 255;
+    } else {
+        mouse_packets[2] = 256 - mouse_packets[2];
+        mouse_y += mouse_packets[2];
+        if (y_o) mouse_y += 255;
+    }
+
+    left_pressed = mouse_packets[0] & PS2Leftbutton;
+    right_pressed = mouse_packets[0] & PS2Rightbutton;
+
+    //TODO: limit for other directions?
+    if (mouse_x < 0) mouse_x = 0;
+    if (mouse_y < 0) mouse_y = 0;
+    if (mouse_x >= VESA_WIDTH) mouse_x = VESA_WIDTH - 1;
+    if (mouse_y >= VESA_HEIGHT) mouse_y = VESA_HEIGHT - 1;
+    
+    mouse_packet_ready = false;
 }
 
 static const char* cursor_ascii = {
@@ -122,50 +166,6 @@ void render_mouse(void) {
     
     render_ascii_art(mouse_x, mouse_y);
 
-    if (!mouse_packet_ready) return;
-
-    bool x_n, y_n, x_o, y_o;
-
-    if (mouse_packets[0] & PS2XSign) x_n = true;
-    else x_n = false;
-
-    if (mouse_packets[0] & PS2YSign) y_n = true;
-    else y_n = false;
-
-    if (mouse_packets[0] & PS2XOverflow) x_o = true;
-    else x_o = false;
-
-    if (mouse_packets[0] & PS2YOverflow) y_o = true;
-    else y_o = false;
-
-    if (!x_n) {
-        mouse_x += mouse_packets[1];
-        if (x_o) mouse_x += 255;
-    } else {
-        mouse_packets[1] = 256 - mouse_packets[1];
-        mouse_x -= mouse_packets[1];
-        if (x_o) mouse_x -= 255;
-    }
-
-    if (!y_n){
-        mouse_y -= mouse_packets[2];
-        if (y_o) mouse_y -= 255;
-    } else {
-        mouse_packets[2] = 256 - mouse_packets[2];
-        mouse_y += mouse_packets[2];
-        if (y_o) mouse_y += 255;
-    }
-
-    left_pressed = mouse_packets[0] & PS2Leftbutton;
-    right_pressed = mouse_packets[0] & PS2Rightbutton;
-
-    //TODO: limit for other directions?
-    if (mouse_x < 0) mouse_x = 0;
-    if (mouse_y < 0) mouse_y = 0;
-    if (mouse_x >= VESA_WIDTH) mouse_x = VESA_WIDTH - 1;
-    if (mouse_y >= VESA_HEIGHT) mouse_y = VESA_HEIGHT - 1;
-    
-    mouse_packet_ready = false;
 }
 
 void init_mouse(void) {
